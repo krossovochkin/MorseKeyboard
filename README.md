@@ -10,7 +10,7 @@ Introduction
 ------------
 This Google's april joke was very fun. But I think that a truth is often told in a joke.
 I would like to tell you about why I decided to fork this keyboard, and will I use it.
-At first, I like typing. And I like typing on a real keyboard. Ten-finger typing gives me possibility to write down some text not thinking about what keys should I tap to type some word. With real PC keyboard I can type something like 200-300 symbols per second for now (in russian and in english too).
+At first, I like typing. And I like typing on a real keyboard. Ten-finger typing gives me possibility to write down some text not thinking about what keys should I tap to type some word. With real PC keyboard I can type something like 200-300 symbols per minute for now (in russian and in english too).
 Smartphone keyboards are always pain for me. Trying to tap at some tiny virtual button is too hard for me. And I can't type no looking at keyboard.
 Swipe keyboards are bad too: this is very hard to my fingers to draw some difficult paths. After hour or two per day of such typing my fingers are hurt.
 The best approach I can remember is T9 keyboard on old phones. But the main issue of this: you should learn keyboard with your dictionary. And this process can be very very long. Without this learning T9 has less advantages with virtual QWERTY-keyboard.
