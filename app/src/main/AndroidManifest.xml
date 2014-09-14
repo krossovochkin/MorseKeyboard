@@ -16,46 +16,32 @@
 */
 -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" 
-        package="com.rgam.morsekeyboard"
-        android:versionCode="7"
-        android:versionName="1.0">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rgam.morsekeyboard">
 
-    <uses-sdk android:targetSdkVersion="11"
-        android:minSdkVersion="7"/>
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true" />
 
-    <application android:label="@string/ime_name"
-                 android:theme="@android:style/Theme.Light.NoTitleBar"
-                 android:icon="@drawable/icon">
+    <application
+        android:label="@string/ime_name"
+        android:theme="@android:style/Theme.Light.NoTitleBar"
+        android:icon="@drawable/icon"
+        android:allowBackup="false">
 
-        <service android:name=".Gtap"
-                 android:permission="android.permission.BIND_INPUT_METHOD">
+        <service
+            android:name=".Gtap"
+            android:permission="android.permission.BIND_INPUT_METHOD">
 
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
             </intent-filter>
 
-            <meta-data android:name="android.view.im" 
-                       android:resource="@xml/method" />
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/method" />
 
         </service>
-
-        <activity android:name=".GtapWelcome"
-                  android:label="@string/ime_name"
-                  android:screenOrientation="portrait">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
-
     </application>
-
-    <supports-screens 
-        android:smallScreens="true" 
-        android:normalScreens="true"
-        android:largeScreens="true" />
-
 </manifest>

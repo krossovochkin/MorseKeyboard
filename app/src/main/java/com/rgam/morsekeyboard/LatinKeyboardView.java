@@ -25,6 +25,7 @@ import android.util.AttributeSet;
 public class LatinKeyboardView extends KeyboardView {
 
     static final int KEYCODE_OPTIONS = -100;
+    static final int KEY_LONG_PRESS = -101;
 
     public LatinKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -42,7 +43,8 @@ public class LatinKeyboardView extends KeyboardView {
             getOnKeyboardActionListener().onKey(KEYCODE_OPTIONS, null);
             return true;
         } else {
-            return super.onLongPress(key);
+            getOnKeyboardActionListener().onKey(key.codes[0], new int[] {KEY_LONG_PRESS});
+            return true;
         }
     }
 }

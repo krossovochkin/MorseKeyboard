@@ -28,19 +28,21 @@ import android.view.View;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
+import android.widget.PopupMenu;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * This code is adapted from the Android Soft Keyboard example.
- * @author Reed Morse
  *
+ * @author Reed Morse
  * @author Vasya Drobushkov changed:
- * - added toggleLanguage functionality
- * - added Shift functionality
+ *         - added toggleLanguage functionality
+ *         - added Shift functionality
  */
-public class Gtap extends InputMethodService 
+public class Gtap extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener {
     static final boolean DEBUG = false;
 
@@ -48,7 +50,7 @@ public class Gtap extends InputMethodService
      * This boolean indicates the optional example code for performing
      * processing of hard keys in addition to regular text generation
      * from on-screen interaction.  It would be used for input methods that
-     * perform language translations (such as converting text entered on 
+     * perform language translations (such as converting text entered on
      * a QWERTY keyboard to Chinese), but may not be used for input methods
      * that are primarily intended to be used for on-screen text entry.
      */
@@ -72,7 +74,7 @@ public class Gtap extends InputMethodService
     private LatinKeyboard mCurKeyboard;
 
     private String mWordSeparators;
-    
+
     // This is used to keep track of location in Predictive Mode.
     private int poemLocation;
     private boolean predictiveEnabled;
@@ -83,19 +85,22 @@ public class Gtap extends InputMethodService
     private final int KEYCODE_SPACE = 32;
     private final int DOT_LENGTH_MS = 300;
     private final int DASH_MULTIPLIER = 3;
-    private final int LETTER_MULTIPLIER = 3;
+    private final int LETTER_MULTIPLIER = 4;
     private final int WORD_MULTIPLIER = 7;
 
     private final int KEYCODE_LETTER_SEPARATOR = -77;
     private final int KEYCODE_WORD_SEPARATOR = -78;
-    
+
     // This is typed in Predictive Mode.
     //private final String poem = "A shimmering global phenomenon. Surfing invisible currents of information. Design the soul of an intelligent machine. Do androids dream of electric sheep?";
     private final String poem = "I've been meaning to tell you for some time about my strong feelings for you. That time we went to get tacos was a wonderful night that creeps into my memories frequently. April fools! ";
     //private final String poem = "I am standing here doing an interview at the Academy of Country Music Awards. It is really exciting that I can email you at the same time. ";
-    
-    /** Main initialization of the input method component. */
-    @Override public void onCreate() {
+
+    /**
+     * Main initialization of the input method component.
+     */
+    @Override
+    public void onCreate() {
         super.onCreate();
         mWordSeparators = getResources().getString(R.string.word_separators);
         poemLocation = 0;
@@ -105,7 +110,8 @@ public class Gtap extends InputMethodService
     /**
      * UI initialization, called after creation and configuration changes.
      */
-    @Override public void onInitializeInterface() {
+    @Override
+    public void onInitializeInterface() {
         if (mMorseKeyboard != null) {
             // Configuration changes can happen after the keyboard gets recreated,
             // so we need to be able to re-build the keyboards if the available
@@ -123,7 +129,8 @@ public class Gtap extends InputMethodService
      * is displayed, and every time it needs to be re-created such as due to
      * a configuration change.
      */
-    @Override public View onCreateInputView() {
+    @Override
+    public View onCreateInputView() {
         mInputView = (KeyboardView) getLayoutInflater().inflate(
                 R.layout.input, null);
         mInputView.setOnKeyboardActionListener(this);
@@ -135,7 +142,8 @@ public class Gtap extends InputMethodService
      * Called by the framework when your view for showing candidates needs to
      * be generated, like {@link #onCreateInputView}.
      */
-    @Override public View onCreateCandidatesView() {
+    @Override
+    public View onCreateCandidatesView() {
         mCandidateView = new CandidateView(this);
         mCandidateView.setService(this);
         return mCandidateView;
@@ -147,7 +155,8 @@ public class Gtap extends InputMethodService
      * bound to the client, and are now receiving all of the detailed information
      * about the target of our edits.
      */
-    @Override public void onStartInput(EditorInfo attribute, boolean restarting) {
+    @Override
+    public void onStartInput(EditorInfo attribute, boolean restarting) {
         super.onStartInput(attribute, restarting);
 
         // predictiveEnabled = settings.getBoolean(Constants.GTAP_PREDICTIVE_MODE, false);
@@ -168,9 +177,9 @@ public class Gtap extends InputMethodService
 
         // We are now going to initialize our state based on the type of
         // text being edited.
-        switch (attribute.inputType&EditorInfo.TYPE_MASK_CLASS) {
-        	// Normally we would switch to a different keyboard,
-        	// but everything is going to be the Morse keyboard.
+        switch (attribute.inputType & EditorInfo.TYPE_MASK_CLASS) {
+            // Normally we would switch to a different keyboard,
+            // but everything is going to be the Morse keyboard.
             case EditorInfo.TYPE_CLASS_NUMBER:
             case EditorInfo.TYPE_CLASS_DATETIME:
             case EditorInfo.TYPE_CLASS_PHONE:
@@ -184,7 +193,7 @@ public class Gtap extends InputMethodService
 
                 // We now look for a few special variations of text that will
                 // modify our behavior.
-                int variation = attribute.inputType &  EditorInfo.TYPE_MASK_VARIATION;
+                int variation = attribute.inputType & EditorInfo.TYPE_MASK_VARIATION;
                 if (variation == EditorInfo.TYPE_TEXT_VARIATION_PASSWORD ||
                         variation == EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
                     // Do not display predictions / what the user is typing
@@ -192,7 +201,7 @@ public class Gtap extends InputMethodService
                     mPredictionOn = false;
                 }
 
-                if (variation == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS 
+                if (variation == EditorInfo.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                         || variation == EditorInfo.TYPE_TEXT_VARIATION_URI
                         || variation == EditorInfo.TYPE_TEXT_VARIATION_FILTER) {
                     // Our predictions are not useful for e-mail addresses
@@ -200,7 +209,7 @@ public class Gtap extends InputMethodService
                     mPredictionOn = false;
                 }
 
-                if ((attribute.inputType&EditorInfo.TYPE_TEXT_FLAG_AUTO_COMPLETE) != 0) {
+                if ((attribute.inputType & EditorInfo.TYPE_TEXT_FLAG_AUTO_COMPLETE) != 0) {
                     // If this is an auto-complete text view, then our predictions
                     // will not be shown and instead we will allow the editor
                     // to supply their own.  We only show the editor's
@@ -228,7 +237,8 @@ public class Gtap extends InputMethodService
      * This is called when the user is done editing a field.  We can use
      * this to reset our state.
      */
-    @Override public void onFinishInput() {
+    @Override
+    public void onFinishInput() {
         super.onFinishInput();
 
         // Clear current composing text and candidates.
@@ -247,7 +257,8 @@ public class Gtap extends InputMethodService
         }
     }
 
-    @Override public void onStartInputView(EditorInfo attribute, boolean restarting) {
+    @Override
+    public void onStartInputView(EditorInfo attribute, boolean restarting) {
         super.onStartInputView(attribute, restarting);
         // Apply the selected keyboard to the input view.
         mInputView.setKeyboard(mCurKeyboard);
@@ -257,9 +268,10 @@ public class Gtap extends InputMethodService
     /**
      * Deal with the editor reporting movement of its cursor.
      */
-    @Override public void onUpdateSelection(int oldSelStart, int oldSelEnd,
-            int newSelStart, int newSelEnd,
-            int candidatesStart, int candidatesEnd) {
+    @Override
+    public void onUpdateSelection(int oldSelStart, int oldSelEnd,
+                                  int newSelStart, int newSelEnd,
+                                  int candidatesStart, int candidatesEnd) {
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd,
                 candidatesStart, candidatesEnd);
 
@@ -282,7 +294,8 @@ public class Gtap extends InputMethodService
      * to show the completions ourself, since the editor can not be seen
      * in that situation.
      */
-    @Override public void onDisplayCompletions(CompletionInfo[] completions) {
+    @Override
+    public void onDisplayCompletions(CompletionInfo[] completions) {
         if (mCompletionOn) {
             mCompletions = completions;
             if (completions == null) {
@@ -291,14 +304,14 @@ public class Gtap extends InputMethodService
             }
 
             List<String> stringList = new ArrayList<String>();
-            for (int i=0; i<(completions != null ? completions.length : 0); i++) {
+            for (int i = 0; i < (completions != null ? completions.length : 0); i++) {
                 CompletionInfo ci = completions[i];
                 if (ci != null) stringList.add(ci.getText().toString());
             }
             setSuggestions(stringList, true, true);
         }
     }
-    
+
     public void predictiveModeChanged() {
     }
 
@@ -325,12 +338,12 @@ public class Gtap extends InputMethodService
         }
 
         if (mComposing.length() > 0) {
-            char accent = mComposing.charAt(mComposing.length() -1 );
+            char accent = mComposing.charAt(mComposing.length() - 1);
             int composed = KeyEvent.getDeadChar(accent, c);
 
             if (composed != 0) {
                 c = composed;
-                mComposing.setLength(mComposing.length()-1);
+                mComposing.setLength(mComposing.length() - 1);
             }
         }
 
@@ -344,7 +357,8 @@ public class Gtap extends InputMethodService
      * We get first crack at them, and can either resume them or let them
      * continue to the app.
      */
-    @Override public boolean onKeyDown(int keyCode, KeyEvent event) {
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 // The InputMethodService already takes care of the back
@@ -357,7 +371,7 @@ public class Gtap extends InputMethodService
                     }
                 }
                 break;
-                
+
             case KeyEvent.KEYCODE_DEL:
                 // Special handling of the delete key: if we currently are
                 // composing text for the user, we want to modify that instead
@@ -367,11 +381,11 @@ public class Gtap extends InputMethodService
                     return true;
                 }
                 break;
-                
+
             case KeyEvent.KEYCODE_ENTER:
                 // Let the underlying text editor always handle these.
                 return false;
-                
+
             default:
                 // For all other keys, if we want to do transformations on
                 // text being entered with a hard keyboard, we need to process
@@ -382,7 +396,6 @@ public class Gtap extends InputMethodService
                     }
                 }
         }
-        
         return super.onKeyDown(keyCode, event);
     }
 
@@ -391,7 +404,8 @@ public class Gtap extends InputMethodService
      * We get first crack at them, and can either resume them or let them
      * continue to the app.
      */
-    @Override public boolean onKeyUp(int keyCode, KeyEvent event) {
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
         // If we want to do transformations on text being entered with a hard
         // keyboard, we need to process the up events to update the meta key
         // state we are tracking.
@@ -408,31 +422,32 @@ public class Gtap extends InputMethodService
      * Helper function to commit any text being composed in to the editor.
      */
     private void commitTyped(InputConnection inputConnection) {
-    	if (mComposing.length() > 0) {
-    		if (predictiveEnabled) {
-    			inputConnection.commitText(mComposing, mComposing.length());
-    		} else {
-    			Character morseCharacter = Morse.characterFromCode(mComposing.toString());
-    			if (morseCharacter != null) {
-    				String morseString = String.valueOf(morseCharacter.charValue());
-	        		inputConnection.commitText(morseString, morseString.length());
-	        	} else {
-	        		// Do nothing, it's not a valid combo.
-	        		//inputConnection.commitText(mComposing, mComposing.length());        		
-	        	}
-        	}
-    		mComposing.setLength(0);
+        if (mComposing.length() > 0) {
+            if (predictiveEnabled) {
+                inputConnection.commitText(mComposing, mComposing.length());
+            } else {
+                Character morseCharacter = Morse.characterFromCode(mComposing.toString(),
+                        mInputView.isShifted());
+                if (morseCharacter != null) {
+                    String morseString = String.valueOf(morseCharacter.charValue());
+                    inputConnection.commitText(morseString, morseString.length());
+                } else {
+                    // Do nothing, it's not a valid combo.
+                    //inputConnection.commitText(mComposing, mComposing.length());
+                }
+            }
+            mComposing.setLength(0);
             updateCandidates();
-    	}
+        }
     }
-    
+
     private void commitTyped(InputConnection inputConnection, String string) {
-    	if (predictiveEnabled) {
-			inputConnection.commitText(mComposing, mComposing.length());
-		} else {
-			inputConnection.commitText(string, string.length());
-		}
-    	updateCandidates();
+        if (predictiveEnabled) {
+            inputConnection.commitText(mComposing, mComposing.length());
+        } else {
+            inputConnection.commitText(string, string.length());
+        }
+        updateCandidates();
     }
 
     /**
@@ -440,7 +455,7 @@ public class Gtap extends InputMethodService
      * editor state.
      */
     private void updateShiftKeyState(EditorInfo attr) {
-        if (attr != null 
+        if (attr != null
                 && mInputView != null && mMorseKeyboard == mInputView.getKeyboard()) {
             int caps = 0;
             EditorInfo ei = getCurrentInputEditorInfo();
@@ -448,6 +463,26 @@ public class Gtap extends InputMethodService
                 caps = getCurrentInputConnection().getCursorCapsMode(attr.inputType);
             }
             mInputView.setShifted(mCapsLock || caps != 0);
+        }
+    }
+
+    private void updateLanguageKeyLabel() {
+        for (Keyboard.Key key : mMorseKeyboard.getKeys()) {
+            if (Arrays.binarySearch(key.codes, Keyboard.KEYCODE_MODE_CHANGE) == 0) {
+                key.label = getCurrentLanguageShort();
+                return;
+            }
+        }
+    }
+
+    private String getCurrentLanguageShort() {
+        switch (Morse.getCurrentLanguage()) {
+            case LANGUAGE_ENGLISH:
+                return "EN";
+            case LANGUAGE_RUSSIAN:
+                return "RU";
+            default:
+                return "";
         }
     }
 
@@ -463,30 +498,66 @@ public class Gtap extends InputMethodService
 
     // Implementation of KeyboardViewListener
     public void onKey(int primaryCode, int[] keyCodes) {
-    	invalidateLetterAndWordTimers();
-    	predictiveEnabled = settings.getBoolean(Constants.GTAP_PREDICTIVE_MODE, false);
-    	
-    	if (primaryCode == KEYCODE_SPACE) {
+        invalidateLetterAndWordTimers();
+        predictiveEnabled = settings.getBoolean(Constants.GTAP_PREDICTIVE_MODE, false);
+
+        if (primaryCode == KEYCODE_SPACE) {
             if (mComposing.length() > 0) {
                 commitTyped(getCurrentInputConnection());
                 beginLetterAndWordTimers();
             } else {
-            	// Nothing typed, commit a space.
-            	commitTyped(getCurrentInputConnection(), " ");
+                // Nothing typed, commit a space.
+                commitTyped(getCurrentInputConnection(), " ");
             }
-    	} else if (primaryCode == Keyboard.KEYCODE_DELETE) {
+        } else if (primaryCode == Keyboard.KEYCODE_DELETE) {
             handleBackspace();
         } else if (primaryCode == Keyboard.KEYCODE_CANCEL) {
             handleClose();
             return;
         } else if (primaryCode == Keyboard.KEYCODE_MODE_CHANGE) {
-            toggleLanguage();
+            if (isLongClick(keyCodes)) {
+                showLanguageHintDialog();
+            } else {
+                toggleLanguage();
+                updateLanguageKeyLabel();
+            }
         } else if (primaryCode == LatinKeyboardView.KEYCODE_OPTIONS) {
             // Show a menu or something.
         } else if (primaryCode == Keyboard.KEYCODE_SHIFT) {
-            // TODO; change caps
+            mCapsLock = !mCapsLock;
+            updateShiftKeyState(getCurrentInputEditorInfo());
         } else {
+            primaryCode = isLongClick(keyCodes) ? KeyEvent.KEYCODE_Q : primaryCode;
             handleCharacter(primaryCode, keyCodes);
+        }
+    }
+
+    private boolean isLongClick(int[] keyCodes) {
+        if (keyCodes == null) {
+            return false;
+        }
+        if (keyCodes.length == 0) {
+            return false;
+        }
+        return keyCodes[0] == LatinKeyboardView.KEY_LONG_PRESS;
+    }
+
+    private void showLanguageHintDialog() {
+        switch (Morse.getCurrentLanguage()) {
+            case LANGUAGE_ENGLISH: {
+                PopupMenu popupMenu = new PopupMenu(this, mInputView);
+                popupMenu.inflate(R.menu.morse_hint_english);
+                popupMenu.show();
+                break;
+            }
+            case LANGUAGE_RUSSIAN: {
+                PopupMenu popupMenu = new PopupMenu(this, mInputView);
+                popupMenu.inflate(R.menu.morse_hint_russian);
+                popupMenu.show();
+                break;
+            }
+            default:
+                return;
         }
     }
 
@@ -524,7 +595,7 @@ public class Gtap extends InputMethodService
     }
 
     public void setSuggestions(List<String> suggestions, boolean completions,
-            boolean typedWordValid) {
+                               boolean typedWordValid) {
         if (suggestions != null && suggestions.size() > 0) {
             setCandidatesViewShown(true);
         } else if (isExtractViewShown()) {
@@ -552,22 +623,23 @@ public class Gtap extends InputMethodService
     }
 
     private int tapCounter = 0;
+
     private void handleCharacter(int primaryCode, int[] keyCodes) {
-    	if (predictiveEnabled) {
-    		/*
+        if (predictiveEnabled) {
+            /*
     		// Each tap is one word
     		String[] poemFragment = poem.split(" ");
     		poemLocation = (poemLocation >= poemFragment.length - 1) ? 0 : poemLocation;
     		mComposing.append(poemFragment[poemLocation++] + " ");
     		commitTyped(getCurrentInputConnection());
     		*/
-    		
-    		// One tap is one character
-    		if (tapCounter++ % 1 == 0) {
-    			poemLocation = (poemLocation >= poem.length()) ? 0 : poemLocation;
-        		mComposing.append(poem.charAt(poemLocation++));
-        		commitTyped(getCurrentInputConnection());
-    		}
+
+            // One tap is one character
+            if (tapCounter++ % 1 == 0) {
+                poemLocation = (poemLocation >= poem.length()) ? 0 : poemLocation;
+                mComposing.append(poem.charAt(poemLocation++));
+                commitTyped(getCurrentInputConnection());
+            }
     		
     		/*
     		// For LL Cool J each tap is worth three letters.
@@ -578,12 +650,12 @@ public class Gtap extends InputMethodService
 	    	poemLocation += 3;
 	    	commitTyped(getCurrentInputConnection());
 	    	*/
-    	} else {
-    		mComposing.append((char) primaryCode); 
-    		updateCandidates();
-    	}
-    	
-    	beginLetterAndWordTimers();
+        } else {
+            mComposing.append((char) primaryCode);
+            updateCandidates();
+        }
+
+        beginLetterAndWordTimers();
     }
 
     private void handleClose() {
@@ -598,7 +670,7 @@ public class Gtap extends InputMethodService
 
     public boolean isWordSeparator(int code) {
         String separators = getWordSeparators();
-        return separators.contains(String.valueOf((char)code));
+        return separators.contains(String.valueOf((char) code));
     }
 
     public void pickDefaultCandidate() {
@@ -646,24 +718,24 @@ public class Gtap extends InputMethodService
     }
 
     private void beginLetterAndWordTimers() {
-    	invalidateLetterAndWordTimers();
-    	morseHandler = new Handler();
+        invalidateLetterAndWordTimers();
+        morseHandler = new Handler();
 
-    	int interval = predictiveEnabled ? 0 : DOT_LENGTH_MS * LETTER_MULTIPLIER;
-    	morseHandler.postDelayed(insertLetterTask, interval);
+        int interval = predictiveEnabled ? 0 : DOT_LENGTH_MS * LETTER_MULTIPLIER;
+        morseHandler.postDelayed(insertLetterTask, interval);
     }
 
     private void invalidateLetterAndWordTimers() {
-    	if (morseHandler != null) {
-    		morseHandler.removeCallbacks(insertLetterTask);
-    	}
+        if (morseHandler != null) {
+            morseHandler.removeCallbacks(insertLetterTask);
+        }
     }
 
     private Runnable insertLetterTask = new Runnable() {
-    	public void run() {
-    		if (mComposing.length() > 0) {
-    			commitTyped(getCurrentInputConnection());
-    		}
-    	}
+        public void run() {
+            if (mComposing.length() > 0) {
+                commitTyped(getCurrentInputConnection());
+            }
+        }
     };
 }

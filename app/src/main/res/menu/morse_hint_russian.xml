@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="А .-" />
+    <item android:title="Б -..." />
+    <item android:title="В .--" />
+    <item android:title="Г --." />
+    <item android:title="Д -.." />
+    <item android:title="Е ." />
+    <item android:title="Ж ...-" />
+    <item android:title="З --.." />
+    <item android:title="И .." />
+    <item android:title="К -.-" />
+    <item android:title="Л .-.." />
+    <item android:title="М --" />
+    <item android:title="Н -." />
+    <item android:title="О ---" />
+    <item android:title="П .--." />
+    <item android:title="Р .-." />
+    <item android:title="С ..." />
+    <item android:title="Т -" />
+    <item android:title="У ..-" />
+    <item android:title="Ф ..-." />
+    <item android:title="Х ...." />
+    <item android:title="Ц -.-." />
+    <item android:title="Ч ---." />
+    <item android:title="Ш ----" />
+    <item android:title="Щ --.-" />
+    <item android:title="Ъ --.--" />
+    <item android:title="Ы -.--"/>
+    <item android:title="Ь -..-"/>
+    <item android:title="Э ..-.."/>
+    <item android:title="Ю ..--"/>
+    <item android:title="Я .-.-"/>
+
+    <item android:title="1 .----" />
+    <item android:title="2 ..---" />
+    <item android:title="3 ...--" />
+    <item android:title="4 ....-" />
+    <item android:title="5 ....." />
+    <item android:title="6 -...." />
+    <item android:title="7 --..." />
+    <item android:title="8 ---.." />
+    <item android:title="9 ----." />
+    <item android:title="0 -----" />
+
+    <item android:title=". .-.-.-" />
+    <item android:title=", --..--" />
+    <item android:title="\? ..--.." />
+    <item android:title="\' .----." />
+    <item android:title="! -.-.--" />
+    <item android:title="/ -..-." />
+    <item android:title="( -.--." />
+    <item android:title=") -.--.-" />
+    <item android:title="&amp; .-..." />
+    <item android:title=": ---..." />
+    <item android:title="; -.-.-." />
+    <item android:title="= -...-" />
+    <item android:title="+ .-.-." />
+    <item android:title="- -....-" />
+    <item android:title="_ ..--.-" />
+    <item android:title="\@ .--.-." />
+</menu>

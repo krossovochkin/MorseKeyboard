@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="A .-" />
+    <item android:title="B -..." />
+    <item android:title="C -.-." />
+    <item android:title="D -.." />
+    <item android:title="E ." />
+    <item android:title="F ..-." />
+    <item android:title="G --." />
+    <item android:title="H ...." />
+    <item android:title="I .." />
+    <item android:title="J .---" />
+    <item android:title="K -.-" />
+    <item android:title="L .-.." />
+    <item android:title="M --" />
+    <item android:title="N -." />
+    <item android:title="O ---" />
+    <item android:title="P .--." />
+    <item android:title="Q --.-" />
+    <item android:title="R .-." />
+    <item android:title="S ..." />
+    <item android:title="T -" />
+    <item android:title="U ..-" />
+    <item android:title="V ...-" />
+    <item android:title="W .--" />
+    <item android:title="X -..-" />
+    <item android:title="Y -.--" />
+    <item android:title="Z -..." />
+
+    <item android:title="1 .----" />
+    <item android:title="2 ..---" />
+    <item android:title="3 ...--" />
+    <item android:title="4 ....-" />
+    <item android:title="5 ....." />
+    <item android:title="6 -...." />
+    <item android:title="7 --..." />
+    <item android:title="8 ---.." />
+    <item android:title="9 ----." />
+    <item android:title="0 -----" />
+
+    <item android:title=". .-.-.-" />
+    <item android:title=", --..--" />
+    <item android:title="\? ..--.." />
+    <item android:title="\' .----." />
+    <item android:title="! -.-.--" />
+    <item android:title="/ -..-." />
+    <item android:title="( -.--." />
+    <item android:title=") -.--.-" />
+    <item android:title="&amp; .-..." />
+    <item android:title=": ---..." />
+    <item android:title="; -.-.-." />
+    <item android:title="= -...-" />
+    <item android:title="+ .-.-." />
+    <item android:title="- -....-" />
+    <item android:title="_ ..--.-" />
+    <item android:title="\@ .--.-." />
+</menu>

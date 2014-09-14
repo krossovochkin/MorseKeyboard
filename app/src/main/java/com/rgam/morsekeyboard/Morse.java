@@ -39,6 +39,25 @@ public class Morse {
         LANGUAGE_RUSSIAN
     }
 
+    public class Letter {
+
+        private char lCase;
+        private char uCase;
+
+        public Letter(char lCase, char uCase) {
+            this.lCase = lCase;
+            this.uCase = uCase;
+        }
+
+        public char getlCase() {
+            return lCase;
+        }
+
+        public char getuCase() {
+            return uCase;
+        }
+    }
+
     private static Language mCurrentLanguage = Language.LANGUAGE_RUSSIAN; // TODO: set to default (previously used)
 
 	// For translating Strings.
@@ -77,6 +96,8 @@ public class Morse {
 		translationTableEnglish.put(Arrays.hashCode(new Code[]{ Code.DOT,  Code.DASH,  Code.DASH }),   'W');
 		translationTableEnglish.put(Arrays.hashCode(new Code[]{ Code.DASH,  Code.DOT,  Code.DOT,  Code.DASH }), 'X');
 		translationTableEnglish.put(Arrays.hashCode(new Code[]{ Code.DASH,  Code.DOT,  Code.DASH,  Code.DASH }), 'Y');
+        translationTableEnglish.put(Arrays.hashCode(new Code[]{ Code.DASH,  Code.DASH,  Code.DOT,  Code.DOT }), 'Z');
+
 		translationTableEnglish.put(Arrays.hashCode(new Code[]{ Code.DOT,  Code.DASH,  Code.DASH,  Code.DASH,  Code.DASH }), '1');
 		translationTableEnglish.put(Arrays.hashCode(new Code[]{ Code.DOT,  Code.DOT,  Code.DASH,  Code.DASH,  Code.DASH }), '2');
 		translationTableEnglish.put(Arrays.hashCode(new Code[]{ Code.DOT,  Code.DOT,  Code.DOT,  Code.DASH,  Code.DASH }), '3');
@@ -87,6 +108,23 @@ public class Morse {
 		translationTableEnglish.put(Arrays.hashCode(new Code[]{ Code.DASH,  Code.DASH,  Code.DASH,  Code.DOT,  Code.DOT }), '8');
 		translationTableEnglish.put(Arrays.hashCode(new Code[]{ Code.DASH,  Code.DASH,  Code.DASH,  Code.DASH,  Code.DOT }), '9');
 		translationTableEnglish.put(Arrays.hashCode(new Code[]{ Code.DASH,  Code.DASH,  Code.DASH,  Code.DASH,  Code.DASH }), '0');
+
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DASH, Code.DOT, Code.DASH, Code.DOT, Code.DASH}), '.');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DASH, Code.DOT, Code.DOT, Code.DASH, Code.DASH}), ',');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DOT, Code.DASH, Code.DASH, Code.DOT, Code.DOT}), '?');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DASH, Code.DASH, Code.DASH, Code.DASH, Code.DOT}), '\'');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DASH, Code.DOT, Code.DASH, Code.DASH}), '!');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DOT, Code.DASH, Code.DOT}), '/');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DASH, Code.DASH, Code.DOT}), '(');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DASH, Code.DASH, Code.DOT, Code.DASH}), ')');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DASH, Code.DOT, Code.DOT, Code.DOT}), '&');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DASH, Code.DASH, Code.DOT, Code.DOT, Code.DOT}), ':');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DASH, Code.DOT, Code.DASH, Code.DOT}), ':');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DOT, Code.DOT, Code.DASH}), '=');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DASH, Code.DOT, Code.DASH, Code.DOT}), '+');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DOT, Code.DOT, Code.DOT, Code.DASH}), '-');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DOT, Code.DASH, Code.DASH, Code.DOT, Code.DASH}), '_');
+        translationTableEnglish.put(Arrays.hashCode(new Code[] {Code.DOT, Code.DASH, Code.DASH, Code.DOT, Code.DASH, Code.DOT}), '@');
 	}
 
     static {
@@ -102,7 +140,7 @@ public class Morse {
         translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DASH, Code.DASH, Code.DOT, Code.DOT}), 'З');
         translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DOT, Code.DOT}), 'И');
         translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DOT, Code.DASH, Code.DASH, Code.DASH}), 'Й');
-        translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DOT, Code.DASH, Code.DOT, Code.DASH}), 'К');
+        translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DASH, Code.DOT, Code.DASH}), 'К');
         translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DOT, Code.DASH, Code.DOT, Code.DOT}), 'Л');
         translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DASH, Code.DASH}), 'М');
         translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DASH, Code.DOT}), 'Н');
@@ -124,6 +162,7 @@ public class Morse {
         translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DOT, Code.DOT, Code.DASH, Code.DOT, Code.DOT}), 'Э');
         translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DOT, Code.DOT, Code.DASH, Code.DASH}), 'Ю');
         translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DOT, Code.DASH, Code.DOT, Code.DASH}), 'Я');
+
         translationTableRussian.put(Arrays.hashCode(new Code[]{ Code.DOT,  Code.DASH,  Code.DASH,  Code.DASH,  Code.DASH }), '1');
         translationTableRussian.put(Arrays.hashCode(new Code[]{ Code.DOT,  Code.DOT,  Code.DASH,  Code.DASH,  Code.DASH }), '2');
         translationTableRussian.put(Arrays.hashCode(new Code[]{ Code.DOT,  Code.DOT,  Code.DOT,  Code.DASH,  Code.DASH }), '3');
@@ -134,6 +173,23 @@ public class Morse {
         translationTableRussian.put(Arrays.hashCode(new Code[]{ Code.DASH,  Code.DASH,  Code.DASH,  Code.DOT,  Code.DOT }), '8');
         translationTableRussian.put(Arrays.hashCode(new Code[]{ Code.DASH,  Code.DASH,  Code.DASH,  Code.DASH,  Code.DOT }), '9');
         translationTableRussian.put(Arrays.hashCode(new Code[]{ Code.DASH,  Code.DASH,  Code.DASH,  Code.DASH,  Code.DASH }), '0');
+
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DASH, Code.DOT, Code.DASH, Code.DOT, Code.DASH}), '.');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DASH, Code.DOT, Code.DOT, Code.DASH, Code.DASH}), ',');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DOT, Code.DASH, Code.DASH, Code.DOT, Code.DOT}), '?');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DASH, Code.DASH, Code.DASH, Code.DASH, Code.DOT}), '\'');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DASH, Code.DOT, Code.DASH, Code.DASH}), '!');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DOT, Code.DASH, Code.DOT}), '/');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DASH, Code.DASH, Code.DOT}), '(');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DASH, Code.DASH, Code.DOT, Code.DASH}), ')');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DASH, Code.DOT, Code.DOT, Code.DOT}), '&');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DASH, Code.DASH, Code.DOT, Code.DOT, Code.DOT}), ':');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DASH, Code.DOT, Code.DASH, Code.DOT}), ':');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DOT, Code.DOT, Code.DASH}), '=');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DASH, Code.DOT, Code.DASH, Code.DOT}), '+');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DASH, Code.DOT, Code.DOT, Code.DOT, Code.DOT, Code.DASH}), '-');
+        translationTableRussian.put(Arrays.hashCode(new Code[] { Code.DOT, Code.DOT, Code.DASH, Code.DASH, Code.DOT, Code.DASH}), '_');
+        translationTableRussian.put(Arrays.hashCode(new Code[] {Code.DOT, Code.DASH, Code.DASH, Code.DOT, Code.DASH, Code.DOT}), '@');
     }
 
 	/**
@@ -141,14 +197,14 @@ public class Morse {
 	 * @param codes a String of periods (.) and dashes (-).
 	 * @return the character corresponding to the given Morse code.
 	 */
-	public static Character characterFromCode(String codes) {
+	public static Character characterFromCode(String codes, boolean isUpperCase) {
 		ArrayList<Code> codeArray = new ArrayList<Code>();
 		for(char ch : codes.toCharArray()) {
 			Code code = (ch == DOT_CHAR) ? Code.DOT : Code.DASH;
 			codeArray.add(code);
 		}
 		
-		return characterFromCode(codeArray);
+		return characterFromCode(codeArray, isUpperCase);
 	}
 	
 	/**
@@ -156,8 +212,12 @@ public class Morse {
 	 * @param codes an array of Codes.
 	 * @return the character corresponding to the given Morse code.
 	 */
-	public static Character characterFromCode(Code[] codes) {
-		return getTranslationTable().get(Arrays.hashCode(codes));
+	public static Character characterFromCode(Code[] codes, boolean isUpperCase) {
+        Character ch = getTranslationTable().get(Arrays.hashCode(codes));
+        if (ch == null) {
+            return null;
+        }
+        return isUpperCase ? ch.toString().toUpperCase().charAt(0) : ch.toString().toLowerCase().charAt(0);
 	}
 	
 	/**
@@ -165,10 +225,10 @@ public class Morse {
 	 * @param codes an ArrayList of Codes.
 	 * @return the character corresponding to the given Morse code.
 	 */
-	public static Character characterFromCode(ArrayList<Code> codes) {
+	public static Character characterFromCode(ArrayList<Code> codes, boolean isUpperCase) {
 		Code[] array = new Code[codes.size()];
 		array = codes.toArray(array);
-		return characterFromCode(array);
+		return characterFromCode(array, isUpperCase);
 	}
 
     private static SparseArray<Character> getTranslationTable() {
@@ -184,6 +244,10 @@ public class Morse {
 
     public static void setCurrentLanguage(Language language) {
         mCurrentLanguage = language;
+    }
+
+    public static Language getCurrentLanguage() {
+        return mCurrentLanguage;
     }
 
     public static void toggleLanguage() {
