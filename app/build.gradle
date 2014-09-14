@@ -20,5 +20,4 @@ android {
 
 dependencies {
     compile 'com.google.guava:guava:18.0-rc1'
-    compile project(':libs:[lib] viewpagerindicator')
 }
