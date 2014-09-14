@@ -121,6 +121,9 @@ public class Gtap extends InputMethodService
             mLastDisplayWidth = displayWidth;
         }
         mMorseKeyboard = new LatinKeyboard(this, R.xml.qwerty);
+
+        updateShiftKeyState(getCurrentInputEditorInfo());
+        updateLanguageKeyLabel();
     }
 
     /**
