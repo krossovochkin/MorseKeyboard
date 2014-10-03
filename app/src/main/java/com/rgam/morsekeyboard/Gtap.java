@@ -87,9 +87,14 @@ public class Gtap extends InputMethodService
     private final int DASH_MULTIPLIER = 3;
     private final int LETTER_MULTIPLIER = 4;
     private final int WORD_MULTIPLIER = 7;
+    private final long DASH_LENGTH_MILLIS = 300L;
 
     private final int KEYCODE_LETTER_SEPARATOR = -77;
     private final int KEYCODE_WORD_SEPARATOR = -78;
+
+    /* CUSTOM LONG CLICK DURATION */
+    private boolean mIsMorseButtonPressed = false;
+    private long mDotDashKeyLastPressTime = 0L;
 
     // This is typed in Predictive Mode.
     //private final String poem = "A shimmering global phenomenon. Surfing invisible currents of information. Design the soul of an intelligent machine. Do androids dream of electric sheep?";
@@ -409,6 +414,7 @@ public class Gtap extends InputMethodService
      */
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+
         // If we want to do transformations on text being entered with a hard
         // keyboard, we need to process the up events to update the meta key
         // state we are tracking.
@@ -501,6 +507,12 @@ public class Gtap extends InputMethodService
 
     // Implementation of KeyboardViewListener
     public void onKey(int primaryCode, int[] keyCodes) {
+
+        if (mIsMorseButtonPressed) {
+            // wait for release morse button
+            return;
+        }
+
         invalidateLetterAndWordTimers();
         predictiveEnabled = settings.getBoolean(Constants.GTAP_PREDICTIVE_MODE, false);
 
@@ -530,7 +542,6 @@ public class Gtap extends InputMethodService
             mCapsLock = !mCapsLock;
             updateShiftKeyState(getCurrentInputEditorInfo());
         } else {
-            primaryCode = isLongClick(keyCodes) ? KeyEvent.KEYCODE_Q : primaryCode;
             handleCharacter(primaryCode, keyCodes);
         }
     }
@@ -715,9 +726,22 @@ public class Gtap extends InputMethodService
     }
 
     public void onPress(int primaryCode) {
+        if (primaryCode == KeyEvent.KEYCODE_R) {
+            mIsMorseButtonPressed = true;
+            mDotDashKeyLastPressTime = System.currentTimeMillis();
+        }
     }
 
     public void onRelease(int primaryCode) {
+        if (primaryCode == KeyEvent.KEYCODE_R) {
+            mIsMorseButtonPressed = false;
+            if (System.currentTimeMillis() - mDotDashKeyLastPressTime < DASH_LENGTH_MILLIS) {
+                onKey(KeyEvent.KEYCODE_R, null);
+            } else {
+                onKey(KeyEvent.KEYCODE_Q, null);
+            }
+        }
+        mDotDashKeyLastPressTime = 0L;
     }
 
     private void beginLetterAndWordTimers() {
